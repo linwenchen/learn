@@ -28,7 +28,7 @@ Status getTopLStack(LinkStack *s,ElemType *e)  //得到栈顶元素
 Status clearLStack(LinkStack *s)   //清空栈
 {
 	//如果栈为空,返回
-	if(!isEmptyLStack(s))return SUCCESS;
+	if(isEmptyLStack(s))return SUCCESS;
 	//循环释放空间
 	while(s->top != NULL)
 	{
