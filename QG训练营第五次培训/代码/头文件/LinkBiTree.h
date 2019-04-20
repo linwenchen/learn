@@ -14,9 +14,16 @@ typedef struct BiTNode {
     struct BiTNode  *lchild,*rchild;  // 左、右孩子指针
 } BiTNode, *BiTree;   // 二叉链表
 
+typedef struct node
+{
+	BiTNode *now;
+    struct node *next;            //指向当前结点的下一结点
+
+} Node,*QueueNode;
+
 typedef enum Status{
 	SUCCESS = 1,
-	ERROR = 0
+	ERROR = 0,
 }Status;
 
 
@@ -25,7 +32,7 @@ typedef enum Status{
  *  @description : 构造空二叉树T
  *  @param       : 二叉树根结点T
  */
-Status InitBiTree(BiTree T);
+Status InitBiTree(BiTree *T);
 
 
 /**
@@ -53,11 +60,11 @@ Status PreOrderTraverse(BiTree T, Status (*visit)(TElemType e));
 
 
 /**
- *  @name        : Status InOrderTraverse(BiTree T, Status (*visit)(TElemType e));	
+ *  @name        : Status InOrderTraverse(BiTree T, Status (*visit)(TElemType e));
  *  @description : 中序遍历二叉树T
  *  @param       : 二叉树根结点T, 对结点的操作函数visit
  */
-Status InOrderTraverse(BiTree T, Status (*visit)(TElemType e));	
+Status InOrderTraverse(BiTree T, Status (*visit)(TElemType e));
 
 
 /**
@@ -65,7 +72,7 @@ Status InOrderTraverse(BiTree T, Status (*visit)(TElemType e));
  *  @description : 后序遍历二叉树T
  *  @param       : 二叉树根结点T, 对结点的操作函数visit
  */
-Status PostOrderTraverse(BiTree T, Status (*visit)(TElemType e)));
+Status PostOrderTraverse(BiTree T, Status (*visit)(TElemType e));
 
 
 /**

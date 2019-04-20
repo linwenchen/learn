@@ -40,12 +40,16 @@ int main()
 		printf("\t后缀表达式：");
 		PostOrderTraverse(T,Print);
 		printf("\n");
+		printf("\t层次遍历：");
+		LevelOrderTraverse(T,Print);
+		printf("\n");
 		int ans = Value(T);
 		if(ans == -2000001000)printf("\t除0！\n");
 		else printf("\tvalue:%d\n",ans);
 		printf("\t按任意键返回...");
 		getch();
 		fflush(stdin);
+		DestroyBiTree(T);
 		system("cls");
 
 

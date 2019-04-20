@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "LinkBiTree.h"
-
+//#include "LQueue.h"
 Status InitBiTree(BiTree *T)
 {
 	(*T) = (BiTree)malloc(sizeof(BiTNode));
@@ -51,8 +51,22 @@ Status CreateBiTree(BiTree T, char* definition)
 		T->data = str[index];
 		str[index] = '\0';//清除
 		//printf("²Ù×÷·û:%c\n",T->data);
-		while(str[left] == '(' && str[right] == ')' )
+		while(str[left] == '(' && str[right] == ')')//去除最外层的括号
 		{
+			//判断是否能清除(1)+(2)
+			//方法：括号匹配
+			int flag = 0;
+			int bracket = 0;
+			int i = left + 1;
+			while(i<right)
+			{
+				if(str[i] == ')')bracket--;
+				else if(str[i] == '(')bracket++;
+				if(bracket < 0)flag = 1;
+				if(flag)break;
+				i++;
+			}
+			if(flag)break;
 			str[left++] = '\0';//清除
 			str[right--] = '\0';//清除
 		}
@@ -103,6 +117,40 @@ Status PostOrderTraverse(BiTree T, Status (*visit)(TElemType e))
 }
 Status LevelOrderTraverse(BiTree T, Status (*visit)(TElemType e))
 {
+	//链表模拟队列
+	QueueNode q;
+	Node *front,*rear;//头尾指针
+	q = (QueueNode)malloc(sizeof(Node));
+	if(q == NULL)return ERROR;
+	q->next = NULL;
+	q->now = T;
+	front = rear = q;
+	while(front)
+	{
+		BiTNode *temp = front->now;
+		visit(temp->data);
+		if(temp->lchild)
+		{
+			Node *p = (Node *)malloc(sizeof(Node));
+			if(p == NULL)return ERROR;
+			p->now = temp->lchild;
+			p->next = NULL;
+			rear->next = p;
+			rear = p;
+		}
+		if(temp->rchild)
+		{
+			Node *p = (Node *)malloc(sizeof(Node));
+			if(p == NULL)return ERROR;
+			p->now = temp->rchild;
+			p->next = NULL;
+			rear->next = p;
+			rear = p;
+		}
+		Node *pp = front;
+		front = front->next;
+		free(pp);
+	}
 	return SUCCESS;
 }
 int Value(BiTree T)			//表达式求值
@@ -238,9 +286,22 @@ int IndexOfOperator(char *str)//寻找最后执行的操作符的下标
 	int len = strlen(str);
 	int left = 0;
 	int right = len - 1;
-	//BUG；(1)+(2)会出错
+	//判断是否能清除(1)+(2)
+	//方法：括号匹配
 	while(str[left] == '(' && str[right] == ')')//去除最外层的括号
 	{
+		int flag = 0;
+		int bracket = 0;
+		i = left + 1;
+		while(i<right)
+		{
+			if(str[i] == ')')bracket--;
+			else if(str[i] == '(')bracket++;
+			if(bracket < 0)flag = 1;
+			if(flag)break;
+			i++;
+		}
+		if(flag)break;
 		left++;
 		right--;
 	}
